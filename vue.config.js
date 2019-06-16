@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: process.env.NODE_ENV === "production" ? "/micro-component-templete/" : "/",
   configureWebpack: {
     output: {
       libraryExport: "default",
