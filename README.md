@@ -1,16 +1,17 @@
-# component-templete-babel
+# Micro Component Templete 微组件模板
 
-## Project setup
+> 使用此模板为微门户 (Micro Portal) 开发组件
+
+## 基本思路
+
+因Vue Router 支持异步组件, 将组件编译为UMD模块, 上传至CDN, 通过配置组件的链接与内存地址, 实现组件的动态变换.
+
+### 初始化
 ```
-yarn install
+git clone 
 ```
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
-
-### Compiles and minifies for production
+### Compiles and m inifies for production
 ```
 yarn run build
 ```
