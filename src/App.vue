@@ -11,11 +11,15 @@
 			</router-link>
 		</div>
 		<div class="component-container">
-			<div  class="readme" v-show='isOnHome' v-html='readme'></div>
+			<div class="readme" v-show="isOnHome" v-html="readme"></div>
 			<router-view></router-view>
 		</div>
 		<transition name="jelly">
-			<div v-show="!isOnHome" class="fixed-btn" @click="$router.push('/')"></div>
+			<div
+				v-show="!isOnHome"
+				class="fixed-btn"
+				@click="$router.push('/')"
+			></div>
 		</transition>
 	</div>
 </template>
@@ -23,6 +27,10 @@
 <script lang="ts">
 import Vue from "vue";
 import { routes } from "./router";
+import Prism from "prismjs";
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-bash';
+import "./assets/prism-theme.css";
 export default Vue.extend({
 	computed: {
 		routes() {
@@ -31,9 +39,12 @@ export default Vue.extend({
 		isOnHome() {
 			return this.$route.path === "/";
 		},
-		readme(){
-			return require('!!html-loader!!!markdown-loader!../README.md');
+		readme() {
+			return require("!!html-loader!!!markdown-loader!../README.md");
 		}
+	},
+	mounted() {
+		Prism.highlightAll();
 	}
 });
 </script>
@@ -63,14 +74,30 @@ export default Vue.extend({
 .component-container {
 	flex-grow: 1;
 	display: flex;
-	background: url("./assets/logo-light.svg") no-repeat center;
 }
 
 .readme {
 	flex-grow: 1;
-	text-align: center;
 	margin: 0 auto;
 	max-width: 600px;
+	background: url("./assets/logo-light.svg") no-repeat center;
+	& /deep/ {
+		color: #303133;
+		line-height: 1.5;
+		h1 {
+			color: #42b983;
+		}
+		blockquote {
+			color: #909399;
+			background: linear-gradient(#409eff, #409eff) no-repeat;
+			background-size: 3px 100%;
+			margin: 0;
+			padding-left: 2em;
+		}
+		h2 {
+			font-weight: 400;
+		}
+	}
 }
 
 .fixed-btn {
@@ -85,6 +112,9 @@ export default Vue.extend({
 	transition: 0.3s;
 	&:hover {
 		transform: scale(1.2);
+	}
+	&:active {
+		transform: scale(0.8);
 	}
 }
 
