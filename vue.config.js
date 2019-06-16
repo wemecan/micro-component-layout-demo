@@ -1,5 +1,6 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === "production" ? "/micro-component-templete/" : "/",
+  publicPath:
+    process.env.NODE_ENV === "production" ? "/micro-component-templete/" : "/",
   configureWebpack: {
     output: {
       libraryExport: "default",
@@ -9,6 +10,7 @@ module.exports = {
       "vue-router": "VueRouter",
       vuex: "Vuex",
       prismjs: "Prism",
+      "element-ui": "ELEMENT",
     },
   },
 };

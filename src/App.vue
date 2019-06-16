@@ -1,6 +1,6 @@
 <template>
-	<div class="main">
-		<div class="components-list">
+	<div class="main" :class="{ pt: navVisible }">
+		<div class="components-list" :class="{ show: navVisible }">
 			<router-link
 				class="nav"
 				v-for="item in routes"
@@ -9,6 +9,13 @@
 			>
 				{{ item.name }}
 			</router-link>
+			<div
+				class="trigger"
+				:class="{ show: navVisible }"
+				@click="navVisible = !navVisible"
+			>
+				<i class="el-icon-caret-bottom"></i>
+			</div>
 		</div>
 		<div class="component-container">
 			<div class="readme" v-show="isOnHome" v-html="readme"></div>
@@ -28,10 +35,15 @@
 import Vue from "vue";
 import { routes } from "./router";
 import Prism from "prismjs";
-import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-bash';
+import "prismjs/components/prism-json";
+import "prismjs/components/prism-bash";
 import "./assets/prism-theme.css";
 export default Vue.extend({
+	data() {
+		return {
+			navVisible: true
+		};
+	},
 	computed: {
 		routes() {
 			return routes;
@@ -51,8 +63,44 @@ export default Vue.extend({
 
 <style lang='scss' scoped>
 .components-list {
-	box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.1);
+	box-shadow: 0 5px 10px -3px rgba(0, 0, 0, 0.1);
+	height: 0;
+	top: 0;
+	width: 100%;
+	background: #fff;
+	position: fixed;
+	transition: height 0.3s ease-in-out;
+	overflow: hidden;
+	&.show {
+		height: 3em;
+	}
 }
+
+.trigger {
+	position: fixed;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #fff;
+	text-align: center;
+	padding: 0 1em 3px;
+	border-radius: 50%;
+	box-shadow: inherit;
+	cursor: pointer;
+	top: 0;
+	transition: 0.3s ease-in-out;
+	color: #909399;
+	i {
+		transition: inherit;
+		transform: translateY(100%);
+	}
+	&.show {
+		top: 3em;
+		i {
+			transform: rotate(180deg)  translateY(0);
+		}
+	}
+}
+
 .nav {
 	display: inline-block;
 	text-decoration: none;
@@ -70,6 +118,10 @@ export default Vue.extend({
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
+	transition: padding 0.3s ease-in-out;
+	&.pt {
+		padding-top: 50px;
+	}
 }
 .component-container {
 	flex-grow: 1;
