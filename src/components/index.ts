@@ -1,5 +1,6 @@
-import HelloWorld from './HelloWorld.vue'
-
+import Layout from "./Layout.vue";
+import ConfigComponent from "./ConfigComponent/ConfigComponent.vue";
 export default {
-    HelloWorld
-}
+  Layout,
+  ConfigComponent,
+};

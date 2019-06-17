@@ -13,4 +13,15 @@ module.exports = {
       "element-ui": "ELEMENT",
     },
   },
+  css: {
+    loaderOptions: {
+      // pass options to sass-loader
+      sass: {
+        data: `@import "~@/assets/var.scss";`,
+      },
+    },
+  },
+  devServer: {
+    proxy: "http://localhost:3000",
+  },
 };

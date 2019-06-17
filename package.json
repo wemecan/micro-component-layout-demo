@@ -1,5 +1,5 @@
 {
-  "name": "micro-component-templete",
+  "name": "micro-component-layout-demo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,6 +8,7 @@
     "build:app": "vue-cli-service build --morden --dest docs"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "element-ui": "^2.3.6",
     "lodash": "^4.17.11",
