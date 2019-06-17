@@ -1,25 +1,16 @@
 <template>
-	<el-row class="list-component-container" type="flex" :gutter="30">
-		<el-col class="list">
-			<div v-for="item in source" :key="item.id">
-				{{ item }}
-			</div>
-		</el-col>
-		<el-col class="layout" v-if="curLayoutComponent">
-			<el-card>
-				<el-form size="medium">
-					<el-form-item>
-						<h3>当前布局组件:</h3>
-						<el-select v-model="curLayoutComponent" placeholder="请选择组件">
-							<el-option v-for="item in source" :key="item.id" :label="item.path" :value="item.id"></el-option>
-						</el-select>
-					</el-form-item>
-					<el-button type="success" size="medium">确定</el-button>
-					<el-button size="medium">重置</el-button>
-				</el-form>
-			</el-card>
-		</el-col>
-	</el-row>
+  <div class="list-component">
+    <h3>全部组件列表</h3>
+    <div class="item" v-for="item in list" :key="item.id">
+      <h2>{{ item.path }}</h2>
+      <p>
+        脚本: <a :href="item.js">{{ item.js }}</a>
+      </p>
+      <p v-if="item.css">
+        样式: <a :href="item.css">{{ item.css }}</a>
+      </p>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -27,37 +18,48 @@ import Vue from "vue";
 import { ConfigComponentStore } from "./ConfigComponent.store";
 
 export default Vue.extend({
-	data() {
-		return {};
-	},
-	computed: {
-		source() {
-			return ConfigComponentStore.state.dataOrigin;
-		},
-		curLayoutComponent: {
-			get() {
-				return ConfigComponentStore.state.curLayoutComponent;
-			},
-			set(newValue: any) {
-				ConfigComponentStore.state.curLayoutComponent = newValue;
-			}
-		}
-	}
+  data() {
+    return {};
+  },
+  computed: {
+    list() {
+      return ConfigComponentStore.state.dataOrigin;
+    }
+  }
 });
 </script>
 
 <style lang='scss' scoped>
-.list-component-container {
-	padding: 30px;
+.list-component {
+  padding: 20px 30px;
+  background: #fff;
+  box-shadow: $--box-shadow-base;
 }
 .list {
-	flex-grow: 1;
+  flex-grow: 1;
 }
 .layout {
-	width: 300px;
+  width: 300px;
 }
 h3 {
-	margin: 0;
-	font-size: 1em;
+  color: $--color-text-regular;
+  margin-top: 0;
+  line-height: 1.5;
+}
+h2 {
+  font-weight: 400;
+  color: $--color-primary;
+}
+p {
+  word-break: break-all;
+  a {
+    color: $--color-text-secondary;
+  }
+}
+.item {
+  border-bottom: $--border-base;
+}
+.item:last-child {
+  border-bottom: none;
 }
 </style>

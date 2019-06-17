@@ -129,10 +129,11 @@ export default Vue.extend({
   color: #42b983;
 }
 .main {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   transition: padding 0.3s ease-in-out;
+  min-height: 100vh;
+  box-sizing: border-box;
   &.pt {
     padding-top: 50px;
   }
@@ -140,6 +141,7 @@ export default Vue.extend({
 .component-container {
   flex-grow: 1;
   display: flex;
+  flex-direction: column;
 }
 
 .readme {

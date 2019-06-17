@@ -22,6 +22,7 @@ export default Vue.extend({});
 	top: $--height-toolbar;
 	width: $--width-sidebar;
 	border-right: $--border-base;
+	background: #fff;
 }
 a {
 	text-decoration: none;

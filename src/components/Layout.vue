@@ -1,32 +1,37 @@
 <template>
-	<div class="layout">
-		<layout-toolbar></layout-toolbar>
-		<layout-sidebar></layout-sidebar>
-		<slot></slot>
-	</div>
+  <div class="layout">
+    <layout-sidebar></layout-sidebar>
+    <layout-toolbar></layout-toolbar>
+    <slot></slot>
+  </div>
 </template>
 
 <script>
 import LayoutToolbar from "./LayoutToolbar.vue";
-import LayoutSidebar from './LayoutSidebar.vue';
+import LayoutSidebar from "./LayoutSidebar.vue";
+
 export default {
-	components: {
-		LayoutToolbar,
-		LayoutSidebar
-	}
+  components: {
+    LayoutToolbar,
+    LayoutSidebar
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .layout {
-	min-height: 100vh;
-	box-sizing: border-box;
-	padding-top: $--height-toolbar;
-	padding-left: $--width-sidebar;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  flex-grow: 1;
+  box-sizing: border-box;
+  padding-top: $--height-toolbar;
+  padding-left: $--width-sidebar;
+  background: $--color-background-base;
 }
 </style>
 <style>
 body {
-	margin: 0;
+  margin: 0;
 }
 </style>
