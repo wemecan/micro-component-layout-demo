@@ -23,7 +23,6 @@ export default {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  flex-grow: 1;
   box-sizing: border-box;
   padding-top: $--height-toolbar;
   padding-left: $--width-sidebar;
