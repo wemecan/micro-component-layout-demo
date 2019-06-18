@@ -1,6 +1,5 @@
 <template>
   <div class="list-component">
-    <h3>全部组件列表</h3>
     <div class="item" v-for="item in list" :key="item.id">
       <h2>{{ item.path }}</h2>
       <p>
@@ -23,7 +22,7 @@ export default Vue.extend({
   },
   computed: {
     list() {
-      return ConfigComponentStore.state.dataOrigin;
+      return ConfigComponentStore.curNamespaceData;
     }
   }
 });
@@ -31,20 +30,16 @@ export default Vue.extend({
 
 <style lang='scss' scoped>
 .list-component {
-  padding: 20px 30px;
+  padding: 0 30px;
   background: #fff;
   box-shadow: $--box-shadow-base;
+  overflow: auto;
 }
 .list {
   flex-grow: 1;
 }
 .layout {
   width: 300px;
-}
-h3 {
-  color: $--color-text-regular;
-  margin-top: 0;
-  line-height: 1.5;
 }
 h2 {
   font-weight: 400;

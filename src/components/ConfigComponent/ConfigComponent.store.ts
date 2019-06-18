@@ -1,23 +1,30 @@
 import Vue from "vue";
 
-import { GlobalService, Component } from "@/service";
+import { GlobalService, Component, getComponentsResult } from "@/service";
 
 export interface ConfigComponentStoreState {
-  dataOrigin: Component[];
-  curLayoutComponent: Component | undefined;
+  dataOrigin: getComponentsResult;
+  curNameSpace: string;
+  curLayoutComponentId: number | undefined;
 }
 
 export class ConfigComponentStore {
   static state: ConfigComponentStoreState = Vue.observable({
-    dataOrigin: [],
-    curLayoutComponent: undefined,
+    dataOrigin: {},
+    curLayoutComponentId: undefined,
+    curNameSpace: ""
   });
+  static get curNamespaceData() {
+    const { dataOrigin, curNameSpace } = this.state;
+    return curNameSpace ? dataOrigin[curNameSpace] : [];
+  }
 
   static async reload() {
     this.state.dataOrigin = await GlobalService.getComponents();
+    this.state.curNameSpace = Object.keys(this.state.dataOrigin)[0];
   }
 
   static async getCurLayoutComponent() {
-    this.state.curLayoutComponent = await GlobalService.getCurLayoutComponent();
+    this.state.curLayoutComponentId = (await GlobalService.getCurLayoutComponent()).id;
   }
 }

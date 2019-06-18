@@ -33,17 +33,15 @@ export default Vue.extend({
   data() {
     return {
       visible: false,
-      form: {
-        path: "",
-        js: "",
-        css: ""
-      } as Component
+      form: {} as Component
     };
   },
   methods: {
     open(src: Component) {
       if (src) {
         this.form = src;
+      } else {
+        this.form = { path: "", js: "", css: "" };
       }
       this.visible = true;
     },
@@ -51,6 +49,7 @@ export default Vue.extend({
       try {
         await GlobalService.createComonent(this.form);
         this.$emit("submit");
+        this.visible = false;
       } catch ({ response }) {
         if (response.status === 422) {
           this.$message.error(response.data.message);
@@ -62,13 +61,7 @@ export default Vue.extend({
 </script>
 
 <style lang='scss' scoped>
-.el-form {
-  .el-input {
-    width: 30em;
-  }
-}
 .helper {
-  margin-left: 1em;
   color: $--color-text-placeholder;
 }
 </style>

@@ -3,17 +3,24 @@
     <el-form size="medium">
       <el-form-item>
         <h3>当前布局组件:</h3>
-        <el-select v-model="curLayoutComponent" placeholder="请选择组件">
-          <el-option
-            v-for="item in componentList"
-            :key="item.id"
-            :label="item.path"
-            :value="item.id"
-          ></el-option>
-        </el-select>
+        <select-components
+          v-if="curLayoutComponentId"
+          v-model="curLayoutComponentId"
+        ></select-components>
       </el-form-item>
-      <el-button type="success" size="medium">确定</el-button>
-      <el-button size="medium">重置</el-button>
+      <p class="warning" v-if="cacheId > 0">
+        更改布局组件是危险操作, 请确定你知道自己在做什么
+      </p>
+      <el-button
+        :disabled="cacheId < 0"
+        type="danger"
+        size="medium"
+        @click="onSubmit"
+        >确定</el-button
+      >
+      <el-button :disabled="cacheId < 0" size="medium" @click="onReset"
+        >恢复</el-button
+      >
     </el-form>
   </div>
 </template>
@@ -21,19 +28,45 @@
 <script lang="ts">
 import Vue from "vue";
 import { ConfigComponentStore } from "./ConfigComponent.store";
+import { GlobalService } from "../../service";
+import SelectComponents from "../SelectComponents.vue";
 
 export default Vue.extend({
+  components: {
+    SelectComponents
+  },
+  data() {
+    return {
+      cacheId: -1
+    };
+  },
   computed: {
-    curLayoutComponent: {
+    curLayoutComponentId: {
       get() {
-        return ConfigComponentStore.state.curLayoutComponent;
+        return ConfigComponentStore.state.curLayoutComponentId;
       },
-      set(newValue: any) {
-        ConfigComponentStore.state.curLayoutComponent = newValue;
+      set(value: number) {
+        const oldId = ConfigComponentStore.state.curLayoutComponentId;
+        if (oldId && this.cacheId < 0) {
+          this.cacheId = oldId;
+        }
+        ConfigComponentStore.state.curLayoutComponentId = value;
       }
     },
-    componentList() {
+    dataOrigin() {
       return ConfigComponentStore.state.dataOrigin;
+    }
+  },
+  methods: {
+    onReset() {
+      this.curLayoutComponentId = this.cacheId;
+      this.cacheId = -1;
+    },
+    async onSubmit() {
+      if (this.curLayoutComponentId) {
+        await GlobalService.setLayoutComponent(this.curLayoutComponentId);
+        this.cacheId = -1;
+      }
     }
   }
 });
@@ -51,5 +84,9 @@ h3 {
   box-shadow: $--box-shadow-base;
   background: #fff;
   padding: 20px;
+}
+.warning {
+  color: $--color-text-placeholder;
+  font-size: 0.8em;
 }
 </style>
