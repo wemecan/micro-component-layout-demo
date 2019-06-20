@@ -1,7 +1,7 @@
 <template>
   <div class="list-component">
     <el-table :data="list" :row-class-name="getRowClassName">
-      <el-table-column label="#" type="index"></el-table-column>
+      <el-table-column label="ID" prop="id" width="100"></el-table-column>
       <el-table-column label="Namespace">
         <editable-cell
           slot-scope="{ row }"
@@ -18,6 +18,7 @@
           slot-scope="{ row }"
           v-model="row.js"
           size="small"
+           @change="onRowChange(row)"
         ></editable-cell>
       </el-table-column>
       <el-table-column label="CSS Url" prop="css">
@@ -25,6 +26,7 @@
           slot-scope="{ row }"
           v-model="row.css"
           size="small"
+           @change="onRowChange(row)"
         ></editable-cell>
       </el-table-column>
       <el-table-column label="Name">
