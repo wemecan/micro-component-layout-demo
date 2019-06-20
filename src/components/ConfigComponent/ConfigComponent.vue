@@ -1,38 +1,17 @@
 <template>
   <div class="config-component">
-    <section>
-      <el-row type="flex" :gutter="10">
-        <el-col>
-          <div class="namespace-card">
-            <label>命名空间</label>
-            <el-autocomplete
-              size="medium"
-              v-model="curNamespace"
-              :fetch-suggestions="namespaceQuery"
-              placeholder="请输入命名空间"
-              @select="onSelect"
-            >
-              <template #default="{item}">
-                {{ item }}
-              </template>
-            </el-autocomplete>
-          </div>
-          <list-component></list-component>
-        </el-col>
-        <el-col :span="10">
-          <div class="button-group">
-            <el-button
-              type="text"
-              icon="el-icon-circle-plus"
-              @click="onOpenDialogModify"
-              >新增组件</el-button
-            >
-          </div>
-          <cur-layout></cur-layout>
-        </el-col>
-      </el-row>
-    </section>
-    <dialog-modify ref="dialogModify" @submit="fetch"></dialog-modify>
+    <el-row type="flex" align="middle" justify="space-between" class="top-row">
+      <div>
+        <el-button type="success" size="small" @click="onAddRow"
+          >新增</el-button
+        >
+        <el-button icon size="small" @click="fetch">
+          重置
+        </el-button>
+      </div>
+      <cur-layout></cur-layout>
+    </el-row>
+    <list-component></list-component>
   </div>
 </template>
 
@@ -47,47 +26,40 @@ export default {
     CurLayout,
     DialogModify
   },
+  data() {
+    return {};
+  },
   computed: {
-    curNamespace: {
-      get() {
-        return ConfigComponentStore.state.curNameSpace;
-      },
-      set(newValue) {
-        ConfigComponentStore.state.curNameSpace = newValue;
-      }
-    },
     dataOrigin() {
       return ConfigComponentStore.state.dataOrigin;
     }
   },
   created() {
-    this.fetch()
+    this.fetch();
   },
   methods: {
     fetch() {
       ConfigComponentStore.reload();
       ConfigComponentStore.getCurLayoutComponent();
     },
-    onOpenDialogModify() {
-      this.$refs.dialogModify.open();
-    },
-    namespaceQuery(str, cb) {
-      const dataOrigin = this.dataOrigin;
-      if (str) {
-        const regex = new RegExp(str, "i");
-        cb(Object.keys(dataOrigin).filter(item => regex.test(item)));
-      } else {
-        cb(Object.keys(dataOrigin));
-      }
-    },
-    onSelect(item) {
-      this.curNamespace = item;
+    onAddRow() {
+      const newRow = {
+        path: "namespace.name",
+        _editing: true,
+        _loading: false
+      };
+      ConfigComponentStore.state.tmpData.push(newRow);
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.top-row {
+  box-shadow: $--box-shadow-base;
+  background: #fff;
+  padding: 20px;
+}
 .config-component {
   background: $--color-background-base;
   padding: 20px;
@@ -101,22 +73,5 @@ export default {
   background: #fff;
   padding: 0 20px;
   margin-bottom: 10px;
-}
-.namespace-card {
-  box-shadow: $--box-shadow-base;
-  background: #fff;
-  padding: 20px 30px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  .el-autocomplete {
-    flex: 1;
-  }
-
-  label {
-    flex-shrink: 0;
-    margin-right: 1em;
-    color: $--color-text-regular;
-  }
 }
 </style>

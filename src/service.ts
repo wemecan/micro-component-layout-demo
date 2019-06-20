@@ -20,15 +20,11 @@ export interface RouteModifyPayload {
   componentId: number | undefined;
 }
 
-export interface getComponentsResult {
-  [namespace: string]: Component[];
-}
-
 export const GlobalService = {
   async getComponents() {
     const res = await Axios.get("/api/component");
     const components: Component[] = res.data;
-    return _groupBy(components, item => item.path.split(".")[0]);
+    return components;
   },
   async getCurLayoutComponent() {
     const res = await Axios.get("/api/config");
@@ -51,5 +47,16 @@ export const GlobalService = {
   async createRouteItem(payload: RouteModifyPayload) {
     const res = await Axios.post("/api/route", payload);
     return res.data;
+  },
+  async updateComponent(id: number, payload: Component) {
+    const res = await Axios.put(`/api/component/${id}`, payload);
+    return res.data;
+  },
+  async deleteComponent(id: number, force?: boolean) {
+    return await Axios.delete(`/api/component/${id}`, {
+      params: {
+        force: force
+      }
+    });
   }
 };

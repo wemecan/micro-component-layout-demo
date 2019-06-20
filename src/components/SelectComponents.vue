@@ -16,7 +16,7 @@ import { ConfigComponentStore } from "./ConfigComponent/ConfigComponent.store";
 export default {
   props: {
     value: {
-      type: Number,
+      type: Number
     }
   },
   computed: {
@@ -29,7 +29,7 @@ export default {
       }
     },
     dataOrigin() {
-      return ConfigComponentStore.state.dataOrigin;
+      return ConfigComponentStore.dataGroupByPath;
     }
   }
 };

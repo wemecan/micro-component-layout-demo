@@ -1,25 +1,18 @@
 <template>
   <div class="cur-layout">
-    <el-form size="medium">
-      <el-form-item>
-        <h3>当前布局组件:</h3>
+    <el-form size="small" inline>
+      <el-form-item label="当前布局组件">
         <select-components
           v-if="curLayoutComponentId"
           v-model="curLayoutComponentId"
         ></select-components>
       </el-form-item>
-      <p class="warning" v-if="cacheId > 0">
-        更改布局组件是危险操作, 请确定你知道自己在做什么
-      </p>
       <el-button
         :disabled="cacheId < 0"
         type="danger"
-        size="medium"
+        size="small"
         @click="onSubmit"
         >确定</el-button
-      >
-      <el-button :disabled="cacheId < 0" size="medium" @click="onReset"
-        >恢复</el-button
       >
     </el-form>
   </div>
@@ -64,8 +57,18 @@ export default Vue.extend({
     },
     async onSubmit() {
       if (this.curLayoutComponentId) {
-        await GlobalService.setLayoutComponent(this.curLayoutComponentId);
-        this.cacheId = -1;
+        try {
+          await this.$confirm(
+            "更改布局组件是危险操作, 请确定你知道自己在做什么",
+            {
+              type: "warning"
+            }
+          );
+          await GlobalService.setLayoutComponent(this.curLayoutComponentId);
+          this.cacheId = -1;
+        } catch (e) {
+          this.onReset();
+        }
       }
     }
   }
@@ -74,19 +77,19 @@ export default Vue.extend({
 
 <style lang='scss' scoped>
 .el-select {
-  width: 100%;
+  min-width: 300px;
 }
 h3 {
   margin-top: 0;
   color: $--color-text-regular;
 }
-.cur-layout {
-  box-shadow: $--box-shadow-base;
-  background: #fff;
-  padding: 20px;
-}
 .warning {
   color: $--color-text-placeholder;
   font-size: 0.8em;
+  margin-left: 1em;
+}
+
+.cur-layout /deep/ .el-form-item {
+  margin-bottom: 0;
 }
 </style>

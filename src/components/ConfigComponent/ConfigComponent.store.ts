@@ -1,27 +1,28 @@
 import Vue from "vue";
 
-import { GlobalService, Component, getComponentsResult } from "@/service";
+import { GlobalService, Component } from "@/service";
+import _groupBy from "lodash/groupBy";
 
 export interface ConfigComponentStoreState {
-  dataOrigin: getComponentsResult;
-  curNameSpace: string;
+  dataOrigin: Component[];
+  tmpData: Component[];
   curLayoutComponentId: number | undefined;
 }
 
 export class ConfigComponentStore {
   static state: ConfigComponentStoreState = Vue.observable({
-    dataOrigin: {},
-    curLayoutComponentId: undefined,
-    curNameSpace: ""
+    dataOrigin: [],
+    tmpData: [],
+    curLayoutComponentId: undefined
   });
-  static get curNamespaceData() {
-    const { dataOrigin, curNameSpace } = this.state;
-    return curNameSpace ? dataOrigin[curNameSpace] : [];
+
+  static get dataGroupByPath() {
+    return _groupBy(this.state.dataOrigin, item => item.path.split(".")[0]);
   }
 
   static async reload() {
     this.state.dataOrigin = await GlobalService.getComponents();
-    this.state.curNameSpace = Object.keys(this.state.dataOrigin)[0];
+    this.state.tmpData = [...this.state.dataOrigin]
   }
 
   static async getCurLayoutComponent() {
