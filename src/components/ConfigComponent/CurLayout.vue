@@ -3,7 +3,6 @@
     <el-form size="small" inline>
       <el-form-item label="当前布局组件">
         <select-components
-          v-if="curLayoutComponentId"
           v-model="curLayoutComponentId"
         ></select-components>
       </el-form-item>
