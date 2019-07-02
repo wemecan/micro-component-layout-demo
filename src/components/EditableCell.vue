@@ -3,12 +3,13 @@
     <component
       v-if="edit || !value"
       :is="tag"
-      placeholder="Hi Edit"
       v-bind="$attrs"
       v-on="listener"
       :value="value"
       ref="input"
-    ></component>
+    >
+    <slot></slot>
+    </component>
     <div v-else @click="onEditEnable">
       <span>{{ value }}</span>
     </div>

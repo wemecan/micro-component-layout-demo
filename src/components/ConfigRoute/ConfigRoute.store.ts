@@ -2,14 +2,12 @@ import Vue from "vue";
 import { Route, GlobalService } from "@/service";
 
 export interface ConfigRouteStoreState {
-  dataOrigin: {
-    [path: string]: Route;
-  };
+  dataOrigin: Route[]
 }
 
 export class ConfigRouteStore {
   static state = Vue.observable<ConfigRouteStoreState>({
-    dataOrigin: {}
+    dataOrigin: []
   });
 
   static async reload() {

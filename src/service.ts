@@ -10,7 +10,7 @@ export interface Component {
 }
 
 export interface Route {
-  id: number;
+  id?: number;
   path: string;
   component: Component;
 }
@@ -33,11 +33,11 @@ export const GlobalService = {
   async getRoutes() {
     const res = await Axios.get("/api/config");
     const routes = res.data.routeItems as Route[];
-    return _keyBy(routes, item => item.path);
+    return routes;
   },
   async setLayoutComponent(id: number) {
     await Axios.post("/api/layout", {
-      id
+      id,
     });
   },
   async createComonent(payload: Component) {
@@ -52,11 +52,19 @@ export const GlobalService = {
     const res = await Axios.put(`/api/component/${id}`, payload);
     return res.data;
   },
+  async updateRouteItem(id: number, payload: RouteModifyPayload) {
+    const res = await Axios.put(`/api/route/${id}`, payload);
+    return res.data;
+  },
   async deleteComponent(id: number, force?: boolean) {
     return await Axios.delete(`/api/component/${id}`, {
       params: {
-        force: force
-      }
+        force: force,
+      },
     });
-  }
+  },
+  async deleteRouteItem(id: number) {
+    const res = await Axios.delete(`/api/route/${id}`);
+    return res.data;
+  },
 };

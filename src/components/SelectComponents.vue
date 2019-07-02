@@ -19,6 +19,9 @@ export default {
       type: Number
     }
   },
+  created(){
+    ConfigComponentStore.reload()
+  },
   computed: {
     curComponentId: {
       get() {
@@ -36,4 +39,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-select {
+  width: 100%;
+}
 </style>
